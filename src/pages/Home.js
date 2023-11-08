@@ -1,12 +1,16 @@
-import React, { useState, useEffect } from "react";
-import NukaCarousel from "nuka-carousel";
+import React, { useState, useEffect, useRef } from "react";
 import genresData from "../genres.json";
 import fetchMovies from "../services/api";
 import MovieCard from "../components/MovieCard/MovieCard";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const Home = () => {
+  const [slideIndex, setSlideIndex] = useState(0);
   const [movies, setMovies] = useState([]);
   const [highlightedIndex, setHighlightedIndex] = useState(0);
+  const sliderRef = useRef();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,25 +25,57 @@ const Home = () => {
     };
     fetchData();
   }, []);
-
-  const handleKeyPress = (e) => {
-    if (e.key === "ArrowRight") {
-      setHighlightedIndex((prevIndex) =>
-        prevIndex < movies[0].length - 1 ? prevIndex + 1 : prevIndex
-      );
-    } else if (e.key === "ArrowLeft") {
-      setHighlightedIndex((prevIndex) =>
-        prevIndex > 0 ? prevIndex - 1 : prevIndex
-      );
-    }
-  };
-
+  console.log(highlightedIndex, "highlightedIndex");
   useEffect(() => {
+    const handleKeyPress = (e) => {
+      if (e.key === "ArrowRight") {
+        if (highlightedIndex < movies[slideIndex].length - 1) {
+          setHighlightedIndex((prevIndex) => prevIndex + 1);
+        } else if (slideIndex < genresData.genres.length - 1) {
+          const nextButton = document.querySelector(".slick-next");
+          if (nextButton) {
+            nextButton.click();
+            setSlideIndex((prevIndex) => prevIndex + 1);
+            setHighlightedIndex(0);
+          }
+        }
+      } else if (e.key === "ArrowLeft") {
+        if (highlightedIndex > 0) {
+          setHighlightedIndex((prevIndex) => prevIndex - 1);
+        } else {
+          if (slideIndex > 0) {
+            setSlideIndex((prevIndex) => prevIndex - 1);
+            setHighlightedIndex(movies[slideIndex - 1].length - 1);
+          }
+        }
+      } else if (e.key === "ArrowDown") {
+        setSlideIndex((slideIndex) =>
+          slideIndex < genresData.genres.length - 1
+            ? slideIndex + 1
+            : slideIndex
+        );
+        setHighlightedIndex(0);
+      } else if (e.key === "ArrowUp") {
+        setSlideIndex((slideIndex) =>
+          slideIndex > 0 ? slideIndex - 1 : slideIndex
+        );
+        setHighlightedIndex(0);
+      }
+    };
+
     document.addEventListener("keydown", handleKeyPress);
     return () => {
       document.removeEventListener("keydown", handleKeyPress);
     };
-  }, [movies]);
+  }, [slideIndex, movies, highlightedIndex, genresData.genres.length]);
+
+  const sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 7,
+    slidesToScroll: 1,
+  };
 
   return (
     <div className="bg-black min-h-screen text-white">
@@ -48,19 +84,20 @@ const Home = () => {
         {genresData.genres.map((genre, index) => (
           <div key={genre.id} className="m-4 w-full pl-5">
             <h2 className="text-xl font-bold mb-4">{genre.name}</h2>
-            <NukaCarousel slidesToShow={8}>
+
+            <Slider ref={sliderRef} {...sliderSettings} key={index}>
               {movies[index]?.map((movie, movieIndex) => (
                 <MovieCard
                   key={movie.id}
                   movie={movie}
                   className={
-                    index === 0 && movieIndex === highlightedIndex
+                    index === slideIndex && movieIndex === highlightedIndex
                       ? "border-2 border-white"
                       : ""
                   }
                 />
               ))}
-            </NukaCarousel>
+            </Slider>
           </div>
         ))}
       </div>
