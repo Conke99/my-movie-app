@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import NukaCarousel from "nuka-carousel";
 import genresData from "../genres.json";
-
-import { fetchMovies } from "../services/api";
+import fetchMovies from "../services/api";
 import MovieCard from "../components/MovieCard/MovieCard";
 
 const Home = () => {
   const [movies, setMovies] = useState([]);
+  const [highlightedIndex, setHighlightedIndex] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -16,16 +16,30 @@ const Home = () => {
         );
         setMovies(moviesData);
       } catch (error) {
-        // TODO: Show Error
         console.error("Error fetching movies:", error);
       }
     };
     fetchData();
   }, []);
 
-  console.log(JSON.stringify(movies), "movies");
+  const handleKeyPress = (e) => {
+    if (e.key === "ArrowRight") {
+      setHighlightedIndex((prevIndex) =>
+        prevIndex < movies[0].length - 1 ? prevIndex + 1 : prevIndex
+      );
+    } else if (e.key === "ArrowLeft") {
+      setHighlightedIndex((prevIndex) =>
+        prevIndex > 0 ? prevIndex - 1 : prevIndex
+      );
+    }
+  };
 
-  let highlighted = "border: 2px solid white";
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyPress);
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress);
+    };
+  }, [movies]);
 
   return (
     <div className="bg-black min-h-screen text-white">
@@ -34,23 +48,19 @@ const Home = () => {
         {genresData.genres.map((genre, index) => (
           <div key={genre.id} className="m-4 w-full pl-5">
             <h2 className="text-xl font-bold mb-4">{genre.name}</h2>
-            {movies[index] && movies[index].length > 0 ? (
-              <NukaCarousel slidesToShow={8}>
-                {movies[index].map((movie, movieIndex) => (
-                  <MovieCard
-                    key={movie.id}
-                    movie={movie}
-                    className={
-                      index === 0 && movieIndex === 0
-                        ? "border-2 border-white"
-                        : ""
-                    }
-                  />
-                ))}
-              </NukaCarousel>
-            ) : (
-              <p>Loading...</p>
-            )}
+            <NukaCarousel slidesToShow={8}>
+              {movies[index]?.map((movie, movieIndex) => (
+                <MovieCard
+                  key={movie.id}
+                  movie={movie}
+                  className={
+                    index === 0 && movieIndex === highlightedIndex
+                      ? "border-2 border-white"
+                      : ""
+                  }
+                />
+              ))}
+            </NukaCarousel>
           </div>
         ))}
       </div>
