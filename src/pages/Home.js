@@ -23,6 +23,10 @@ const Home = () => {
     fetchData();
   }, []);
 
+  console.log(JSON.stringify(movies), "movies");
+
+  let highlighted = "border: 2px solid white";
+
   return (
     <div className="bg-black min-h-screen text-white">
       <h1 className="text-3xl font-bold text-center pt-8">Genres</h1>
@@ -30,14 +34,23 @@ const Home = () => {
         {genresData.genres.map((genre, index) => (
           <div key={genre.id} className="m-4 w-full pl-5">
             <h2 className="text-xl font-bold mb-4">{genre.name}</h2>
-            <NukaCarousel slidesToShow={8}>
-              {movies[index]
-                ?.filter((movie) => movie.genre_ids?.includes(genre.id))
-                .map((movie) => {
-                  console.log(JSON.stringify(movie));
-                  return <MovieCard movie={movie} />;
-                })}
-            </NukaCarousel>
+            {movies[index] && movies[index].length > 0 ? (
+              <NukaCarousel slidesToShow={8}>
+                {movies[index].map((movie, movieIndex) => (
+                  <MovieCard
+                    key={movie.id}
+                    movie={movie}
+                    className={
+                      index === 0 && movieIndex === 0
+                        ? "border-2 border-white"
+                        : ""
+                    }
+                  />
+                ))}
+              </NukaCarousel>
+            ) : (
+              <p>Loading...</p>
+            )}
           </div>
         ))}
       </div>
