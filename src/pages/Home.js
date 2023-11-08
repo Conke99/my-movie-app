@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { fetchMovies } from "../services/api";
+import NukaCarousel from "nuka-carousel";
 import genresData from "../genres.json";
+
+import { fetchMovies } from "../services/api";
 import MovieCard from "../components/MovieCard/MovieCard";
-import MovieSlider from "../components/MovieSlider/MovieSlider";
 
 const Home = () => {
   const [movies, setMovies] = useState([]);
@@ -15,13 +16,12 @@ const Home = () => {
         );
         setMovies(moviesData);
       } catch (error) {
+        // TODO: Show Error
         console.error("Error fetching movies:", error);
       }
     };
     fetchData();
   }, []);
-
-  console.log(movies, "movies");
 
   return (
     <div className="bg-black min-h-screen text-white">
@@ -30,13 +30,14 @@ const Home = () => {
         {genresData.genres.map((genre, index) => (
           <div key={genre.id} className="m-4 w-full pl-5">
             <h2 className="text-xl font-bold mb-4">{genre.name}</h2>
-            <div className="grid grid-cols-9 gap-1">
+            <NukaCarousel slidesToShow={8}>
               {movies[index]
-                .filter((movie) => movie.genre_ids?.includes(genre.id))
-                .map((movie) => (
-                  <MovieSlider key={movie.id} movie={movie} />
-                ))}
-            </div>
+                ?.filter((movie) => movie.genre_ids?.includes(genre.id))
+                .map((movie) => {
+                  console.log(JSON.stringify(movie));
+                  return <MovieCard movie={movie} />;
+                })}
+            </NukaCarousel>
           </div>
         ))}
       </div>
