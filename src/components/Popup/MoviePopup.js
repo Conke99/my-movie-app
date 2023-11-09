@@ -49,6 +49,9 @@ const MoviePopup = ({ open, movie }) => {
               <Dialog.Description className="mb-5 text-sm leading-normal">
                 {movie?.overview}
               </Dialog.Description>
+              <p className="text-sm font-bold">
+                Vote Average: {movie.vote_average}
+              </p>
             </div>
           </div>
         </Dialog.Content>
