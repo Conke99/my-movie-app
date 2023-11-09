@@ -50,7 +50,7 @@ const MoviePopup = ({ open, movie }) => {
                 {movie?.overview}
               </Dialog.Description>
               <p className="text-sm font-bold">
-                Vote Average: {movie.vote_average}
+                Vote Average: {movie?.vote_average}
               </p>
             </div>
           </div>

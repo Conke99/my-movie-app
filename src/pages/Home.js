@@ -16,6 +16,27 @@ const Home = () => {
   const [selectedMovie, setSelectedMovie] = useState(null);
   const sliderRef = useRef();
 
+  const sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 300,
+    slidesToShow: 7,
+    slidesToScroll: 1,
+  };
+
+  const handleEnterPress = (e) => {
+    if (
+      e.key === "Enter" &&
+      movies[slideIndex] &&
+      movies[slideIndex][highlightedIndex]
+    ) {
+      // Set the selected movie and display the modal
+      const movie = movies[slideIndex][highlightedIndex];
+      setSelectedMovie(movie);
+      setShowModal(true);
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -94,19 +115,6 @@ const Home = () => {
     };
   }, [slideIndex, movies, highlightedIndex, genresData.genres.length]);
 
-  const handleEnterPress = (e) => {
-    if (
-      e.key === "Enter" &&
-      movies[slideIndex] &&
-      movies[slideIndex][highlightedIndex]
-    ) {
-      // Set the selected movie and display the modal
-      const movie = movies[slideIndex][highlightedIndex];
-      setSelectedMovie(movie);
-      setShowModal(true);
-    }
-  };
-
   useEffect(() => {
     document.addEventListener("keydown", handleEnterPress);
 
@@ -116,17 +124,11 @@ const Home = () => {
     };
   }, [handleEnterPress]);
 
-  const sliderSettings = {
-    dots: true,
-    infinite: true,
-    speed: 300,
-    slidesToShow: 7,
-    slidesToScroll: 1,
-  };
-
   return (
     <div className="bg-black min-h-screen text-white">
-      <h1 className="text-3xl font-bold text-center pt-8">Genres</h1>
+      <h1 className="text-3xl font-bold text-center pt-8">
+        Select your movie using arrow keys on your keyboard{" "}
+      </h1>
       <div className="flex flex-col justify-center items-center h-full w-full">
         {genresData.genres.map((genre, index) => (
           <div key={genre.id} className="m-4 w-11/12 pl-5">
