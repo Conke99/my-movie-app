@@ -139,10 +139,8 @@ const Home = () => {
                 <MovieCard
                   key={movie.id}
                   movie={movie}
-                  className={
+                  isActive={
                     index === slideIndex && movieIndex === highlightedIndex
-                      ? "border-4 border-red-900"
-                      : ""
                   }
                 />
               ))}
