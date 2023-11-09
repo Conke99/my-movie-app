@@ -13,11 +13,21 @@ const SliderSection = ({
   sliderRef,
   genresData,
 }) => {
+  let slidesToShow = 6;
+  const windowWidth = window.innerWidth;
+  if (windowWidth < 600) {
+    slidesToShow = 2;
+  } else if (windowWidth < 900) {
+    slidesToShow = 3;
+  } else if (windowWidth < 1200) {
+    slidesToShow = 4;
+  }
+
   const sliderSettings = {
     dots: true,
     infinite: true,
     speed: 300,
-    slidesToShow: 7,
+    slidesToShow: slidesToShow,
     slidesToScroll: 1,
   };
 
