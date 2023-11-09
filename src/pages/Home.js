@@ -125,9 +125,9 @@ const Home = () => {
   }, [handleEnterPress]);
 
   return (
-    <div className="bg-black min-h-screen text-white">
+    <div className="bg-slate-950 min-h-screen text-white">
       <h1 className="text-3xl font-bold text-center pt-8">
-        Select your movie using arrow keys on your keyboard{" "}
+        Select your movie using arrow keys on your keyboard
       </h1>
       <div className="flex flex-col justify-center items-center h-full w-full">
         {genresData.genres.map((genre, index) => (

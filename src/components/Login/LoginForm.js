@@ -8,6 +8,7 @@ const LoginForm = () => {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
@@ -25,7 +26,7 @@ const LoginForm = () => {
       localStorage.setItem("access_token", access_token);
       navigate("/home");
     } catch (error) {
-      // TODO: display error messages
+      setError(error.response.data.error);
       console.error("Login failed:", error);
     }
   };
@@ -33,7 +34,7 @@ const LoginForm = () => {
   return (
     <form onSubmit={handleSubmit} className="w-full flex flex-col">
       <input
-        className="w-full h-9 mb-8 text-lg pl-5"
+        className="w-full h-9 mb-8 text-lg pl-3"
         type="text"
         id="username"
         placeholder="Username"
@@ -42,7 +43,7 @@ const LoginForm = () => {
       />
 
       <input
-        className="w-full h-9 mb-8 text-lg pl-5"
+        className="w-full h-9 mb-8 text-lg pl-3"
         type="password"
         id="password"
         placeholder="Password"
@@ -51,11 +52,16 @@ const LoginForm = () => {
       />
 
       <button
-        className="w-full bg-purple-900 h-11 text-gray-400 text-lg"
+        className="w-full bg-sky-950 h-11 text-white text-lg"
         type="submit"
       >
         Confirm
       </button>
+      {error && (
+        <div className="text-red-500 mt-2">
+          <p>{error}</p>
+        </div>
+      )}
     </form>
   );
 };

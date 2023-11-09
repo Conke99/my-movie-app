@@ -1,12 +1,14 @@
 import React from "react";
 
 const MovieCard = ({ movie, isActive }) => {
-  const { title, poster_path, overview, vote_average } = movie;
+  const { title, poster_path } = movie;
 
   return (
     <div className="text-white text-center">
       <div
-        className={`${isActive ? "border-4 border-red-900" : ""} inline-block`}
+        className={`${
+          isActive ? "border-4 border-red-900 rounded-lg" : ""
+        } inline-block`}
       >
         <img
           src={`https://image.tmdb.org/t/p/w500/${poster_path}`}
