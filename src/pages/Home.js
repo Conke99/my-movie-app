@@ -25,23 +25,27 @@ const Home = () => {
     };
     fetchData();
   }, []);
-  console.log(highlightedIndex, "highlightedIndex");
+
+  // console.log(highlightedIndex, "highlightedIndex");
+  // console.log(movies[slideIndex]?.length);
+  // console.log(slideIndex, "slideIndex");
+
   useEffect(() => {
     const handleKeyPress = (e) => {
       if (e.key === "ArrowRight") {
         if (highlightedIndex < movies[slideIndex].length - 1) {
           setHighlightedIndex((prevIndex) => prevIndex + 1);
-        } else if (slideIndex < genresData.genres.length - 1) {
           const nextButton = document.querySelector(".slick-next");
-          if (nextButton) {
-            nextButton.click();
-            setSlideIndex((prevIndex) => prevIndex + 1);
-            setHighlightedIndex(0);
-          }
+          nextButton.click();
+        } else if (slideIndex < genresData.genres.length - 1) {
+          setSlideIndex((prevIndex) => prevIndex + 1);
+          setHighlightedIndex(0);
         }
       } else if (e.key === "ArrowLeft") {
         if (highlightedIndex > 0) {
           setHighlightedIndex((prevIndex) => prevIndex - 1);
+          const prevButton = document.querySelector(".slick-prev");
+          prevButton.click();
         } else {
           if (slideIndex > 0) {
             setSlideIndex((prevIndex) => prevIndex - 1);
@@ -82,7 +86,7 @@ const Home = () => {
       <h1 className="text-3xl font-bold text-center pt-8">Genres</h1>
       <div className="flex flex-col justify-center items-center h-full w-full">
         {genresData.genres.map((genre, index) => (
-          <div key={genre.id} className="m-4 w-full pl-5">
+          <div key={genre.id} className="m-4 w-11/12 pl-5">
             <h2 className="text-xl font-bold mb-4">{genre.name}</h2>
 
             <Slider ref={sliderRef} {...sliderSettings} key={index}>
