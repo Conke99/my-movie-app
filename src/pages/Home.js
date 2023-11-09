@@ -26,16 +26,13 @@ const Home = () => {
     fetchData();
   }, []);
 
-  // console.log(highlightedIndex, "highlightedIndex");
-  // console.log(movies[slideIndex]?.length);
-  // console.log(slideIndex, "slideIndex");
-
   useEffect(() => {
     const handleKeyPress = (e) => {
       if (e.key === "ArrowRight") {
         if (highlightedIndex < movies[slideIndex].length - 1) {
           setHighlightedIndex((prevIndex) => prevIndex + 1);
-          const nextButton = document.querySelector(".slick-next");
+          const nextButton =
+            document.querySelectorAll(".slick-next")[slideIndex];
           nextButton.click();
         } else if (slideIndex < genresData.genres.length - 1) {
           setSlideIndex((prevIndex) => prevIndex + 1);
@@ -44,7 +41,8 @@ const Home = () => {
       } else if (e.key === "ArrowLeft") {
         if (highlightedIndex > 0) {
           setHighlightedIndex((prevIndex) => prevIndex - 1);
-          const prevButton = document.querySelector(".slick-prev");
+          const prevButton =
+            document.querySelectorAll(".slick-prev")[slideIndex];
           prevButton.click();
         } else {
           if (slideIndex > 0) {
@@ -53,21 +51,25 @@ const Home = () => {
           }
         }
       } else if (e.key === "ArrowDown") {
-        setSlideIndex((slideIndex) =>
-          slideIndex < genresData.genres.length - 1
-            ? slideIndex + 1
-            : slideIndex
-        );
-        setHighlightedIndex(0);
+        if (slideIndex < genresData.genres.length - 1) {
+          const nextSlideIndex = slideIndex + 1;
+
+          sliderRef.current.slickGoTo(nextSlideIndex);
+          setSlideIndex(nextSlideIndex);
+          setHighlightedIndex(0);
+        }
       } else if (e.key === "ArrowUp") {
-        setSlideIndex((slideIndex) =>
-          slideIndex > 0 ? slideIndex - 1 : slideIndex
-        );
-        setHighlightedIndex(0);
+        if (slideIndex > 0) {
+          const prevSlideIndex = slideIndex - 1;
+          sliderRef.current.slickGoTo(prevSlideIndex);
+          setSlideIndex(prevSlideIndex);
+          setHighlightedIndex(0);
+        }
       }
     };
 
     document.addEventListener("keydown", handleKeyPress);
+
     return () => {
       document.removeEventListener("keydown", handleKeyPress);
     };
@@ -80,7 +82,7 @@ const Home = () => {
     slidesToShow: 7,
     slidesToScroll: 1,
   };
-
+  console.log(slideIndex, "slideIndex ");
   return (
     <div className="bg-black min-h-screen text-white">
       <h1 className="text-3xl font-bold text-center pt-8">Genres</h1>
