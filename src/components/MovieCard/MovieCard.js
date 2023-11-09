@@ -1,7 +1,7 @@
 import React from "react";
 
 const MovieCard = ({ movie, isActive }) => {
-  const { title, poster_path } = movie;
+  const { title, backdrop_path } = movie;
 
   return (
     <div className="text-white text-center">
@@ -11,7 +11,7 @@ const MovieCard = ({ movie, isActive }) => {
         } inline-block`}
       >
         <img
-          src={`https://image.tmdb.org/t/p/w500/${poster_path}`}
+          src={`https://image.tmdb.org/t/p/w500/${backdrop_path}`}
           alt={title}
           className="rounded-lg shadow-lg h-56 w-44 object-cover"
         />
