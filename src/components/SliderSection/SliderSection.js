@@ -32,7 +32,7 @@ const SliderSection = ({
   };
 
   return (
-    <div key={index} className="m-4 w-11/12 pl-5">
+    <div key={index} className="m-4 w-11/12">
       <h2 className="text-xl font-bold mb-4">
         {genresData?.genres[index]?.name}
       </h2>

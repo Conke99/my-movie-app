@@ -18,7 +18,7 @@ const HomePageContent = () => {
   return (
     <div className="flex flex-col justify-center items-center h-full w-full">
       {genresData.genres.map((genre, index) => (
-        <div key={genre.id} className="m-4 w-11/12 pl-5">
+        <div key={genre.id} className="m-4 w-11/12 pl-5 h-80 ">
           <SliderSection
             key={genre.id}
             genre={genre}

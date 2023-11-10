@@ -43,25 +43,28 @@ const LoginForm = () => {
       />
 
       <input
-        className="w-full h-9 mb-8 text-lg pl-3"
+        className={
+          error
+            ? "w-full h-9 mb-2 text-lg pl-3"
+            : "w-full h-9 mb-8 text-lg pl-3"
+        }
         type="password"
         id="password"
         placeholder="Password"
         value={password}
         onChange={handlePasswordChange}
       />
-
+      {error && (
+        <div className="text-red-500 mb-2">
+          <p>{error}</p>
+        </div>
+      )}
       <button
         className="w-full bg-sky-950 h-11 text-white text-lg"
         type="submit"
       >
         Confirm
       </button>
-      {error && (
-        <div className="text-red-500 mt-2">
-          <p>{error}</p>
-        </div>
-      )}
     </form>
   );
 };
