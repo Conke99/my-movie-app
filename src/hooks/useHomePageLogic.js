@@ -71,21 +71,17 @@ const useHomePageLogic = () => {
           }
         }
       } else if (e.key === "ArrowDown") {
-        // Move to the next slider below if available
         if (slideIndex < genresData.genres.length - 1) {
-          const nextSlideIndex = slideIndex + 1;
-          // Slide to the next slider
-          sliderRef.current.slickGoTo(nextSlideIndex);
-          setSlideIndex(nextSlideIndex);
+          setSlideIndex((prevIndex) => prevIndex + 1);
           setHighlightedIndex(0);
         }
       } else if (e.key === "ArrowUp") {
-        // Move to the previous slider above if available
         if (slideIndex > 0) {
-          const prevSlideIndex = slideIndex - 1;
-          // Slide to the previous slider
-          sliderRef.current.slickGoTo(prevSlideIndex);
-          setSlideIndex(prevSlideIndex);
+          setSlideIndex((prevIndex) => prevIndex - 1);
+          setHighlightedIndex(0);
+        } else if (slideIndex === 0 && highlightedIndex === 0) {
+          const lastSlideIndex = genresData.genres.length - 1;
+          setSlideIndex(lastSlideIndex);
           setHighlightedIndex(0);
         }
       } else if (e.key === "Escape") {
