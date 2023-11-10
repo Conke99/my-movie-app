@@ -136,7 +136,6 @@ const useHomePageLogic = () => {
     genresData,
     resetSlider,
     sliderKey,
-    setSliderKey,
   };
 };
 
