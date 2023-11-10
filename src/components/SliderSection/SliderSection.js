@@ -12,6 +12,7 @@ const SliderSection = ({
   highlightedIndex,
   sliderRef,
   genresData,
+  sliderKey,
 }) => {
   let slidesToShow = 6;
   const windowWidth = window.innerWidth;
@@ -29,6 +30,7 @@ const SliderSection = ({
     speed: 300,
     slidesToShow: slidesToShow,
     slidesToScroll: 1,
+    key: sliderKey,
   };
 
   return (

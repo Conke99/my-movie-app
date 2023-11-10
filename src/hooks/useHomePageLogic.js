@@ -9,6 +9,7 @@ const useHomePageLogic = () => {
   const [highlightedIndex, setHighlightedIndex] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState(null);
+  const [sliderKey, setSliderKey] = useState(Date.now());
   const sliderRef = useRef();
 
   const handleEnterPress = (e) => {
@@ -22,6 +23,15 @@ const useHomePageLogic = () => {
       setSelectedMovie(movie);
       setShowModal(true);
     }
+  };
+
+  // Function to reset the slider
+  const resetSlider = () => {
+    // Generate a new key value (you can use any method to make it unique)
+    const newKey = new Date().getTime().toString();
+
+    // Set the new key to trigger the re-render and reset the slider
+    setSliderKey(newKey);
   };
 
   useEffect(() => {
@@ -74,15 +84,18 @@ const useHomePageLogic = () => {
         if (slideIndex < genresData.genres.length - 1) {
           setSlideIndex((prevIndex) => prevIndex + 1);
           setHighlightedIndex(0);
+          resetSlider();
         }
       } else if (e.key === "ArrowUp") {
         if (slideIndex > 0) {
           setSlideIndex((prevIndex) => prevIndex - 1);
           setHighlightedIndex(0);
+          resetSlider();
         } else if (slideIndex === 0 && highlightedIndex === 0) {
           const lastSlideIndex = genresData.genres.length - 1;
           setSlideIndex(lastSlideIndex);
           setHighlightedIndex(0);
+          resetSlider();
         }
       } else if (e.key === "Escape") {
         setShowModal(false);
@@ -121,6 +134,9 @@ const useHomePageLogic = () => {
     sliderRef,
     handleEnterPress,
     genresData,
+    resetSlider,
+    sliderKey,
+    setSliderKey,
   };
 };
 

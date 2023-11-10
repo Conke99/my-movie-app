@@ -13,7 +13,15 @@ const HomePageContent = () => {
     showModal,
     selectedMovie,
     sliderRef,
+    sliderKey,
+    setSliderKey,
+    resetSlider,
   } = useHomePageLogic();
+
+  // Function to reset the slider
+  const handleResetSlider = () => {
+    resetSlider();
+  };
 
   return (
     <div className="flex flex-col justify-center items-center h-full w-full">
@@ -28,6 +36,7 @@ const HomePageContent = () => {
             sliderRef={sliderRef}
             genresData={genresData}
             index={index}
+            sliderKey={sliderKey}
           />
         </div>
       ))}
